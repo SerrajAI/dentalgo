@@ -1,0 +1,79 @@
+{% extends "accounts/accounts_base.html" %}
+{% load staticfiles %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/table.scss' %}">
+{% endblock %}
+
+
+
+{% block body_block %}
+
+
+  <div class="jumbotron">
+
+
+    <h2>Opérations éffectuées: </h2>
+
+    <table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Opération</th>
+      <th>Patient</th>
+      <th>Rendez-vous</th>
+      <th>Date</th>
+      <th>Heure</th>
+      <th>Détails</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for operation in operations|dictsortreversed:"appointment.day"|dictsortreversed:"appointment.time" %}
+      <tr height="70">
+        <td >{{ operation.fullname }}</td>
+        <td >{{ operation.patient }}</td>
+        <td >{{ operation.appointment }}</td>
+        <td >{{ operation.appointment.day | date:"D d M Y" }}</td>
+        <td >{{ operation.appointment.time }}</td>
+        <td ><a href="op/{{operation.id}}/"> Détails... </a></li></td>
+
+
+
+        {# <td><a href="{% url 'accounts:delete'%} ">Delete Patient</a></td> #}
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% if is_paginated %}
+  <ul class="pagination">
+    {% if page_obj.has_previous %}
+      <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in paginator.page_range %}
+      {% if page_obj.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+      <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+<ol>
+  {% for patient in patient_list %}
+    <h2><li><a href="{{patient.id}}/"> {{patient.fullname}} </a></li></h2>
+  {% endfor %}
+</ol>
+
+
+
+
+  <p><a class='btn btn-warning' href="{% url 'accounts:createop'%} ">Add Operation</a></p>
+</div>
+{% endblock %}

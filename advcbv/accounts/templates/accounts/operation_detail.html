@@ -1,0 +1,36 @@
+{% extends "accounts/accounts_base.html" %}
+{% block body_block %}
+  <div class="jumbotron">
+    <h2> Détails opération:</h2>
+    {# <h2>patient Details:</h2> #}
+
+    <p>Id: {{operation_details.id}}</p>
+    <p>Docteur :Dr. {{operation_details.created_by.first_name}} {{operation_details.created_by.last_name}}</p>
+    <p>Type: {{operation_details.fullname}}</p>
+    <p>Patient: {{operation_details.patient}}</p>
+    <p>Dent: {{operation_details.dent}}</p>
+    <p>Rendez-vous: {{operation_details.appointment}}</p>
+    <p>Prix: {{operation_details.price}} DH</p>
+    <p>Avance: {{operation_details.advance}} DH</p>
+    <p>Reste: {{operation_details.rest}} DH</p>
+    <p>Jour: {{appointment_details.day| date:"D d M Y"}}</p>
+    <p>Heure: {{appointment_details.time|date:"G:i" }}</p>
+
+
+
+    {# <p>Doctor: <strong>Dr. {{operation_details.doctor.first_name}}</strong></p> #}
+
+    <p>Notes: <div class="btn btn-danger" href= "#"><strong>{{operation_details.special}}</strong></div></p>
+    <p>Assurance patient:<div class="btn btn-success" href= "#"><strong>{{operation_details.patient.assurance}}</strong></div></p> 
+      {# {% for student in patient_details.students.all %} #}
+      {# {% endfor %} #}
+      </div>
+
+  <div class="container">
+  <div class="jumbotron">
+  <p><a class='btn btn-primary' href="{% url 'accounts:updateop' pk=operation_details.pk %}">Update</a>                   <a class='btn btn-primary' href="{% url 'accounts:deleteop' pk=operation_details.pk %}">Delete</a></p>
+
+
+  </div>
+</div>
+{% endblock %}

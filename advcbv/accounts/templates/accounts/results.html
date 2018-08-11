@@ -1,0 +1,69 @@
+{% extends "accounts/accounts_base.html" %}
+{% block body_block %}
+  {# <div class="jumbotron"> #}
+  <div class="col-lg-8 col-lg-offset-2">
+    <form  align="center" action="{% url 'accounts:results' %}" method="GET">
+      <input value="{{request.GET.q}}" name="q" >
+      <button class="btn btn-success" type="submit">Search</button>
+
+    </form>
+
+    <h3> <br>Les patients correspondants à votre recherche sont : <br></h3>
+
+
+    <table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Patient</th>
+      <th>Rejoint le</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for patient in results|dictsort:"fullname" %}
+      <tr>
+
+        <td><a href="{{patient.id}}/"> {{patient.fullname}} </a></li></td>
+        <td>{{ patient.created_at }}</td>
+        {# <td><a href="{% url 'accounts:delete'%} ">Delete Patient</a></td> #}
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% if results.has_other_pages %}
+  <ul class="pagination">
+    {% if results.has_previous %}
+      <li><a href="?page={{ results.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in results.paginator.page_range %}
+      {% if results.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if results.has_next %}
+      <li><a href="?page={{ results.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+<ol>
+  {% for patient in patient_list %}
+    <h2><li><a href="{{patient.id}}/"> {{patient.fullname}} </a></li></h2>
+  {% endfor %}
+</ol>
+
+
+
+{% if results %}
+
+{% else %}
+    <p><a class='btn btn-warning' href="{% url 'accounts:create'%} ">Add Patient</a></p>
+{% endif %}
+
+</div>
+{% endblock %}

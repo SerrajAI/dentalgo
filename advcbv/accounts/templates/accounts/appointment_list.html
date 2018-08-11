@@ -1,0 +1,81 @@
+{% extends "accounts/accounts_base.html" %}
+{% load staticfiles %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/table.scss' %}">
+{% endblock %}
+
+
+
+{% block body_block %}
+
+{# <div class="container"> #}
+  {# <div class="jumbotron"> #}
+  <div class="col-lg-8 col-lg-offset-2">
+
+
+
+
+  <section class="home-section  bg-gray">
+    <h2>Liste de vos prochains Rendez-vous Dr. {{user.first_name}} {{user.last_name}}:</h2>
+
+    <table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Patient</th>
+      <th>Date</th>
+      <th>Heure</th>
+      <th>Détails</th>
+
+    </tr>
+  </thead>
+  <tbody>
+    {% for app in appointments|dictsort:"day"|dictsort:"time" %}
+      <tr height="70">
+        <td >{{ app.patient }}</td>
+        <td >{{ app.day| date:"D d M Y" }}</td>
+        <td >{{ app.time| time:"H:i" }}</td>
+        <td ><a href="app/{{app.id}}/"> Détails... </a></li></td>
+
+
+    {% endfor %}
+  </tbody>
+</table>
+
+{% if is_paginated %}
+  <ul class="pagination">
+    {% if page_obj.has_previous %}
+      <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in paginator.page_range %}
+      {% if page_obj.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+      <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+<ol class="list-group">
+  {% for patient in patient_list %}
+    <h2><li class="list-group-item"><a href="{{patient.id}}/"> {{patient.fullname}} </a></li></h2>
+  {% endfor %}
+</ol>
+
+
+
+
+  <p><a class='btn btn-warning' href="{% url 'accounts:createapp'%} ">Add Appointment</a></p>
+{# </div> #}
+  </section>
+
+  </div>
+
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "accounts/accounts_base.html" %}
+
+{% block body_block %}
+<h2>Etes-vous sur(e) de vouloir supprimer le Rendez-vous de  {{appointment.patient }}?</h2>
+<div class="container">
+<div class="jumbotron">
+<form method="post">
+  {% csrf_token %}
+  <input type="submit" class="btn btn-danger" value="Supprimer">
+  <a href="{% url 'accounts:detailapp' pk=appointment.pk%} ">Annuler</a>
+
+</form>
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "accounts/accounts_base.html" %}
+
+{% block body_block %}
+ {# <div class="container"> #}
+  <div class="jumbotron">
+    <h2>Détails du Rendez-vous:</h2>
+    {# <h2>patient Details:</h2> #}
+    {% if patient_details.profile_picture %}
+    <p><img src="{{ patient_details.profile_picture.url }}" alt="not found" height="50" width="70" ></p>
+    {% endif %}
+    <p>Id: {{appointment_details.id}}</p>
+    <p>Patient: {{appointment_details.patient}}</p>
+
+    <p>Date: {{appointment_details.day| date:"D d M Y"}}</p>
+    <p>Heure: {{appointment_details.time|date:"G:i" }}</p>
+    {# <p>Doctor: <strong>Dr. {{patient_details.doctor.username}}</strong></p> #}
+
+    <p><div class="btn btn-danger" href= "#">Notes: <strong>{{appointment_details.special}}</strong></div></p>
+    {# <div class="btn btn-success" href= "#">Assurance <strong>{{patient_details.assurance}}</strong></div> #}
+      {# {% for student in patient_details.students.all %} #}
+      {# {% endfor %} #}
+      <p>Operations:
+        <strong>{% for operation in appointment_details.operations.all %}
+          <li><a href="{% url 'accounts:detailop' operation.id %}">{{ operation }}</a></li>
+      {% endfor %}</strong></p>
+
+      </div>
+      </div>
+  <div class="container">
+  <div class="jumbotron">
+  <p><a class='btn btn-primary' href="{% url 'accounts:updateapp' pk=appointment_details.pk %}">Update</a>                 <p>  </p>   <a class='btn btn-primary' href="{% url 'accounts:deleteapp' pk=appointment_details.pk %}">Delete</a></p>
+
+
+  {# </div> #}
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "accounts/accounts_base.html" %}
+
+{% load bootstrap3 %}
+
+
+
+{% block extrahead %}       {# Extra Resources Start #}
+{{ form.media }}            {# Form required JS and CSS #}
+{% endblock %}
+{% block body_block %}
+<h2>
+  {% if not form.instance.pk %}
+  Créer opération :
+  {% else %}
+  Modifier opération :
+  {% endif %}
+</h2>
+  <form enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <input type="submit" class='btn btn-success' value="Confirmer">
+
+  </form>
+
+
+{% endblock %}

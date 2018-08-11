@@ -1,0 +1,74 @@
+{% extends "accounts/accounts_base.html" %}
+{% load staticfiles %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/table.scss' %}">
+{% endblock %}
+
+
+
+{% block body_block %}
+
+
+  <div class="jumbotron">
+
+
+    <h2>List of Dr. {{user.first_name}} {{user.last_name}}'s patients</h2>
+
+    <table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Nom complet :</th>
+      <th>Rejoint le :</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for patient in patients|dictsort:"fullname" %}
+      <tr height="70">
+        <td ><a href="{{patient.id}}/"> {{patient.fullname}} </a></li></td>
+        <td >{{patient.created_at | date:"D d M Y"}}</td>
+
+        {% if patient.profile_picture %}
+        <td align="center"><img src="{{ patient.profile_picture.url }}" alt="not found" height="50" width="70" ></td>
+        {% endif %}
+
+
+        {# <td><a href="{% url 'accounts:delete'%} ">Delete Patient</a></td> #}
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% if is_paginated %}
+  <ul class="pagination">
+    {% if page_obj.has_previous %}
+      <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in paginator.page_range %}
+      {% if page_obj.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+      <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+<ol>
+  {% for patient in patient_list %}
+    <h2><li><a href="{{patient.id}}/"> {{patient.fullname}} </a></li></h2>
+  {% endfor %}
+</ol>
+
+
+
+
+  <p><a class='btn btn-warning' href="{% url 'accounts:create'%} ">Add Patient</a></p>
+</div>
+{% endblock %}

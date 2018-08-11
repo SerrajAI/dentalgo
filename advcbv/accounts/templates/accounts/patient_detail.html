@@ -1,0 +1,43 @@
+{% extends "accounts/accounts_base.html" %}
+{% block body_block %}
+{# <div class="container"> #}
+  <div class="jumbotron">
+    <h2>Patient Details:</h2>
+    {# <h2>patient Details:</h2> #}
+    {% if patient_details.profile_picture %}
+    <p><img src="{{ patient_details.profile_picture.url }}" alt="not found" height="150" width="150" ></p>
+    {% endif %}
+    <h3>  Id: </h3><h4> {{patient_details.id}}</h4>
+    <h3>  A rejoint le: </h3><h4> {{patient_details.created_at | date:"D d M Y"}} à {{patient_details.created_at | date:" G:i"}}</h4>
+    <h3>  Nom complet: </h3><h4>  {{patient_details.fullname}}</h4>
+    <h3>  CIN:</h3> <h4>  {{patient_details.cin}}</h4>
+    <h3>  Téléphone: </h3><h4>  {{patient_details.phone}}</h4>
+    <h3>  Docteur:</h3> <h4><strong>  Dr. {{patient_details.created_by.first_name}} {{patient_details.created_by.last_name}}</strong></p></h4>
+    <h3>  Opérations:</h3>
+      <ul class="list-group">
+      <strong>  {% for operation in patient_details.operations.all %}
+                    <li class="list-group-item" ><a href="{% url 'accounts:detailop' operation.id %}">{{ operation }}</a></li>
+                {% endfor %}
+      </strong>
+      </ul>
+    </p>
+
+
+
+    <p><h3>Notes spéciales:</h3><div class="btn btn-danger" href= "#"> <strong>{{patient_details.special}}</strong></div></p>
+    <p><h3>Assurance : </h3><div class="btn btn-success" href= "#"<strong>{{patient_details.assurance}}</strong></div>
+      {# {% for student in patient_details.students.all %} #}
+      {# {% endfor %} #}
+      </p>
+  </div>
+{# </div> #}
+
+  {# <div class="container"> #}
+  <div class="jumbotron">
+  <p><a class='btn btn-primary' href="{% url 'accounts:update' pk=patient_details.pk %}"> Modifier   </a> "         "       
+    <a class='btn btn-primary' href="{% url 'accounts:delete' pk=patient_details.pk %}">Supprimer</a></p>
+
+
+  </div>
+
+{% endblock %}
